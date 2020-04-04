@@ -94,9 +94,9 @@ export default {
   methods: {
     init () {
       let countrySlug = this.activeCountry
-      this.$store.dispatch('cases/fetchCaseData', { countrySlug, caseType: 'confirmed' })
       this.$store.dispatch('cases/fetchCaseData', { countrySlug, caseType: 'recovered' })
       this.$store.dispatch('cases/fetchCaseData', { countrySlug, caseType: 'deaths' })
+      this.$store.dispatch('cases/fetchCaseData', { countrySlug, caseType: 'confirmed' })
     },
 
     getRecoveredDataForDate (someDate) {
