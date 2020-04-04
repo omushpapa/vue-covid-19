@@ -8,7 +8,7 @@ export default {
   state: {
     confirmedData: {},
     recoveredData: {},
-    deathData: {}
+    deathData: {},
   },
 
   mutations: {

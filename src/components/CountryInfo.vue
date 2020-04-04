@@ -6,7 +6,9 @@
         <thead class="thead-light">
           <tr>
             <th scope="col">Date </th>
-            <th scope="col">Cases</th>
+            <th scope="col">Confirmed</th>
+            <th scope="col">Recovered</th>
+            <th scope="col">Deaths</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +26,8 @@
             <tr v-for="(item, index) in confirmedData" v-bind:key="index">
               <td>{{ item.Date | isoTimeToReadable }}</td>
               <td>{{ item.Cases }}</td>
+              <td>{{ getRecoveredDataForDate(item.Date) }}</td>
+              <td>{{ getDeathsDataForDate(item.Date) }}</td>
             </tr>
           </template>
 
@@ -58,6 +62,24 @@ export default {
       return this.$store.getters['cases/getDataForCountry']('confirmed', this.activeCountry)
     },
 
+    parsedRecoveredData: function () {
+      let data = {}
+      this.recoveredData.forEach(element => {
+        data[element.Date] = element.Cases
+      })
+
+      return data
+    },
+
+    parsedDeathData: function () {
+      let data = {}
+      this.deathData.forEach(element => {
+        data[element.Date] = element.Cases
+      })
+
+      return data
+    },
+
     recoveredData: function () {
       return this.$store.getters['cases/getDataForCountry']('recovered', this.activeCountry)
     },
@@ -71,7 +93,17 @@ export default {
     init () {
       let countrySlug = this.activeCountry
       this.$store.dispatch('cases/fetchCaseData', { countrySlug, caseType: 'confirmed' })
-    }
+      this.$store.dispatch('cases/fetchCaseData', { countrySlug, caseType: 'recovered' })
+      this.$store.dispatch('cases/fetchCaseData', { countrySlug, caseType: 'deaths' })
+    },
+
+    getRecoveredDataForDate (someDate) {
+      return this.parsedRecoveredData[someDate]
+    },
+
+    getDeathsDataForDate (someDate) {
+      return this.parsedDeathData[someDate]
+    },
   },
 
   watch: {

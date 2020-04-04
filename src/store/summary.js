@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import { Repository } from '@/api'
 
 export default {
@@ -20,7 +22,8 @@ export default {
 
   getters: {
     getValidCountryList: (state) => {
-      return state.countryList.filter(item => item.Country)
+      let countries = _.orderBy(state.countryList, ['Country'], ['asc'])
+      return countries.filter(item => item.Country)
     },
 
     getCountryBySlug: (state) => (slug) => {
