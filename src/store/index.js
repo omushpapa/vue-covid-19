@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import summary from './summary'
 import status from './status'
 import cases from './cases'
+import itemStatus from './itemStatus'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export const store = new Vuex.Store({
 
     // status
     summaryStatus: status,
-    casesStatus: status
+    casesStatus: status,
+    caseItemStatus: itemStatus
   }
 })

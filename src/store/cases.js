@@ -55,14 +55,29 @@ export default {
         countryData = []
       }
       return countryData
+    },
+
+    hasData: (state, getters) => (caseType, countrySlug) => {
+      let data = getters.getDataForCountry(caseType, countrySlug)
+      return data.length > 0
     }
   },
 
   actions: {
-    fetchCaseData ({ commit }, payload) {
+    fetchCaseData ({ commit, getters, rootGetters }, payload) {
       commit('casesStatus/updateStatus', true, { root: true })
+      commit('caseItemStatus/updateStatus', { name: countrySlug, value: true}, { root: true })
       let countrySlug = payload.countrySlug
       let caseType = payload.caseType
+
+      if (
+        getters.hasData(caseType, countrySlug) && 
+        rootGetters['caseItemStatus/isUptoDate'](countrySlug)
+      ) {
+        commit('casesStatus/updateStatus', false, { root: true })
+        commit('caseItemStatus/updateStatus', { name: countrySlug, value: false}, { root: true })
+        return
+      }
 
       return Repository.getCaseData(caseType, countrySlug)
         .then((response) => {
@@ -85,12 +100,14 @@ export default {
               }
               commit(mutation, finalData)
               commit('casesStatus/updateLastModified', null, { root: true })
+              commit('caseItemStatus/updateLastModified', countrySlug, { root: true })
             }
             
           }
         })
         .finally(() => {
           commit('casesStatus/updateStatus', false, { root: true })
+          commit('caseItemStatus/updateStatus', { name: countrySlug, value: false}, { root: true })
         })
     }
   }
