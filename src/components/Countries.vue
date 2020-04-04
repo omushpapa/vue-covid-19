@@ -13,13 +13,13 @@
           </template>
           <template v-else="">
             <button v-on:click="updateCountries" type="button" class="btn btn-primary">
-              Refresh
+              Update
             </button>
           </template>
         </div>
 
         <div class="col">
-          <nav aria-label="Page navigation">
+          <nav v-if="countryCount > 0" aria-label="Page navigation">
             <ul class="pagination pagination-sm">
               <li class="page-item"
                 v-bind:class="{disabled: !hasPrev}"
@@ -50,7 +50,10 @@
 
       <div class="row">
         <ul class="list-group list-group-flush w-100">
-          <li v-for="country in getItemsForPage()" :key="country.country" class="list-group-item d-flex justify-content-between align-items-center">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+          v-for="(country, index) in getItemsForPage()" :key="index" 
+          v-on:click="viewCountryInfo(country.Slug)" 
+          v-bind:class="{active: activeCountry == country.Slug}">
             {{ country.Country }}
             <span class="badge badge-secondary badge-pill">
               {{ country.TotalConfirmed }}
@@ -64,7 +67,12 @@
   </div>
 
   <div class="col ">
-    <Totals />
+    <template v-if="activeCountry">
+      <CountryInfo v-bind:activeCountry="activeCountry" />
+    </template>
+    <template v-else="">
+      <Totals />
+    </template>
   </div>
 
 </div>
@@ -74,17 +82,20 @@
 import { mapState, mapGetters } from 'vuex'
 
 import Totals from './Totals'
+import CountryInfo from './CountryInfo'
 
 export default {
   name: 'countries',
 
   components: {
-    Totals
+    Totals,
+    CountryInfo
   },
 
   data () {
     return {
-      page: 1
+      page: 1,
+      activeCountry: null
     }
   },
 
@@ -169,6 +180,11 @@ export default {
 
     selectPage (pageNumber) {
       this.page = pageNumber
+    },
+
+    viewCountryInfo (countrySlug) {
+      console.debug(`viewing info for ${countrySlug}`)
+      this.activeCountry = countrySlug
     }
   }
 }

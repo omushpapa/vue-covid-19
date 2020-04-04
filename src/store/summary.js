@@ -78,11 +78,6 @@ export default {
 
     getTotalRecovered: (state, getters) => {
       return getters.getGeneralStats.totalRecovered
-    },
-
-    getPages: (state) => {
-      let countryCount = state.countryList.length
-      return countryCount / 10 // 10 items per page
     }
     
   },
