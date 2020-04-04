@@ -12,7 +12,7 @@
             </div>
           </template>
           <template v-else="">
-            <button v-on:click="updateCountries" type="button" class="btn btn-primary">
+            <button v-on:click="updateCountries" type="button" class="btn btn-primary btn-sm">
               Update
             </button>
           </template>

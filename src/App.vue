@@ -9,6 +9,9 @@
           <a class="nav-item nav-link" v-bind:class="{active: currentComponent === 'countries'}"  @click="selectComponent('countries')" href="#">Countries</a>
           <a class="nav-item nav-link" href="#">About</a>
         </div>
+        <div class="navbar-nav ml-auto">
+          <a class="nav-item nav-link ml-auto">{{ lastUpdated | isoTimeToReadable }}</a>
+        </div>
       </div>
     </nav>
 
@@ -30,6 +33,8 @@ import { mapState, mapGetters } from 'vuex'
 import Home from './components/Home.vue'
 import Countries from './components/Countries.vue'
 
+import { isoTimeToReadable } from '@/helpers'
+
 export default {
   name: 'App',
   data () {
@@ -41,6 +46,10 @@ export default {
   components: {
     Home,
     Countries
+  },
+
+  created () {
+    this.init()
   },
 
   computed: {
@@ -56,9 +65,17 @@ export default {
       newRecovered: 'getNewRecovered', 
       totalRecovered: 'getTotalRecovered'
     }),
+
+    ...mapState('summary', {
+      lastUpdated: 'lastRevision'
+    }),
   },
 
   methods: {
+    init () {
+      this.updateCountries()
+    },
+
     updateCountries () {
       this.$store.dispatch('summary/fetchSummary')
     },
@@ -66,6 +83,12 @@ export default {
     selectComponent (componentName) {
       console.debug(`selecting component ${componentName}`)
       this.currentComponent = componentName
+    }
+  },
+
+  filters: {
+    isoTimeToReadable (value) {
+      return isoTimeToReadable(value)
     }
   }
 }

@@ -41,6 +41,8 @@
 <script>
 import { mapState } from 'vuex'
 
+import { isoTimeToReadable } from '@/helpers'
+
 export default {
   name: 'countries',
 
@@ -115,8 +117,7 @@ export default {
 
   filters: {
     isoTimeToReadable (value) {
-      let d = new Date(value)
-      return d.toDateString()
+      return isoTimeToReadable(value)
     }
   }
 }
