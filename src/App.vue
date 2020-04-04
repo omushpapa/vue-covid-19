@@ -2,8 +2,11 @@
   <div id="app" class="container-fluid h-100">
 
     <nav class="navbar navbar-light bg-light navbar-expand-md">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
       <span class="navbar-brand mb-0 h1"><i class="fas fa-virus"></i></span>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="collapse navbar-collapse" id="mainNavbar">
         <div class="navbar-nav">
           <a class="nav-item nav-link cursor-pointer" v-bind:class="{active: currentComponent === 'home'}" @click="selectComponent('home')" >Home <span class="sr-only">(current)</span></a>
           <a class="nav-item nav-link" v-bind:class="{active: currentComponent === 'countries'}"  @click="selectComponent('countries')" href="#">Countries</a>
