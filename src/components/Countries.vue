@@ -209,6 +209,7 @@ export default {
 
     search (text) {
       this.searchResults = []
+      this.activeCountry = null
       this.countries.forEach(country => {
         if (country.Country && country.Country.toLowerCase().indexOf(text) != -1) {
           this.searchResults.push(country)
