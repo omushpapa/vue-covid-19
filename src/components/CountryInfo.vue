@@ -7,11 +7,11 @@
           <tr>
             <th scope="col">
               Date 
-                <button v-show="reverseDate" class="btn btn-sm btn-light" v-on:click="reverseDate = false">
-                    <i class="fas cursor-pointer fa-long-arrow-alt-up"></i>
+                <button v-show="reverseDate" class="btn btn-sm btn-light cursor-pointer" v-on:click="reverseDate = false">
+                    <i class="fas fa-long-arrow-alt-up"></i>
                 </button>
-                <button v-show="!reverseDate" class="btn btn-sm btn-light" v-on:click="reverseDate = true">
-                    <i class="fas cursor-pointer fa-long-arrow-alt-down"></i>
+                <button v-show="!reverseDate" class="btn btn-sm btn-light cursor-pointer" v-on:click="reverseDate = true">
+                    <i class="fas fa-long-arrow-alt-down"></i>
                 </button>
             </th>
             <th scope="col">Confirmed</th>
