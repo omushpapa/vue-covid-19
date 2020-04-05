@@ -98,3 +98,4 @@ public/
 .dynamodb/
 
 *.py
+deploy.sh
