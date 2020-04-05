@@ -101,6 +101,16 @@ export default {
     CountryInfo
   },
 
+  created () {
+    this.$toast.info('Select a country to view more data', {
+      timeout: 2500,
+      position: 'top-right',
+      closeOnClick: true,
+      pauseOnHover: true,
+      hideProgressBar: true
+    })
+  },
+
   data () {
     return {
       page: 1,
