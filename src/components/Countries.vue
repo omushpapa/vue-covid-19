@@ -19,7 +19,7 @@
         </div>
 
         <div class="col">
-          <nav v-if="countryCount > 0" aria-label="Page navigation">
+          <nav v-if="!searchTerm && countryCount > 0" aria-label="Page navigation">
             <ul class="pagination pagination-sm">
               <li class="page-item"
                 v-bind:class="{disabled: !hasPrev}"
@@ -48,10 +48,18 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row mt-2">
+        <div class="col">
+          <form class="form-inline my-2 my-lg-0">
+            <input v-model="searchTerm" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          </form>
+        </div>
+      </div>
+
+      <div class="row mt-2">
         <ul class="list-group list-group-flush w-100">
           <li class="list-group-item d-flex justify-content-between align-items-center"
-          v-for="(country, index) in getItemsForPage()" :key="index" 
+          v-for="(country, index) in displayCountries" :key="index" 
           v-on:click="viewCountryInfo(country.Slug)" 
           v-bind:class="{active: activeCountry == country.Slug}">
             {{ country.Country }}
@@ -80,6 +88,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import _ from 'lodash'
 
 import Totals from './Totals'
 import CountryInfo from './CountryInfo'
@@ -95,7 +104,9 @@ export default {
   data () {
     return {
       page: 1,
-      activeCountry: null
+      activeCountry: null,
+      searchTerm: '',
+      searchResults: []
     }
   },
 
@@ -149,6 +160,14 @@ export default {
       }
 
       return choices
+    },
+
+    displayCountries: function () {
+      if (this.searchTerm) {
+        return this.searchResults
+      } else {
+        return this.getItemsForPage()
+      }
     }
   },
 
@@ -185,6 +204,23 @@ export default {
     viewCountryInfo (countrySlug) {
       console.debug(`viewing info for ${countrySlug}`)
       this.activeCountry = countrySlug
+    },
+
+    search (text) {
+      this.searchResults = []
+      this.countries.forEach(country => {
+        if (country.Country && country.Country.toLowerCase().indexOf(text) != -1) {
+          this.searchResults.push(country)
+        }
+      })
+    }
+  },
+
+  watch: {
+    searchTerm: function (oldValue, newValue) {
+      console.debug(`old: ${oldValue}, new: ${newValue}`)
+      let debouncedSearch = _.debounce(this.search, 500)
+      debouncedSearch(newValue.toLowerCase())
     }
   }
 }
