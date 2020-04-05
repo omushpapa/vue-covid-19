@@ -4,7 +4,7 @@ import { errorParser, responseParser } from './helpers'
 
 const Service = axios.create({
   baseURL: 'https://api.covid19api.com',
-  timeout: 3000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
   }

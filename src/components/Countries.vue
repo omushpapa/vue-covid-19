@@ -106,7 +106,8 @@ export default {
       page: 1,
       activeCountry: null,
       searchTerm: '',
-      searchResults: []
+      searchResults: [],
+      itemsPerPage: 9
     }
   },
 
@@ -143,7 +144,7 @@ export default {
     },
 
     pageCount: function () {
-      let x = this.countryCount / 10
+      let x = this.countryCount / this.itemsPerPage
       return Math.ceil(x)
     },
 
@@ -179,7 +180,7 @@ export default {
 
     getItemsForPage () {
       let actualPageNumber = this.page - 1
-      let constant = 10
+      let constant = this.itemsPerPage
       let startIndex = constant * actualPageNumber
       let lastIndex = startIndex + constant
       return this.countries.slice(startIndex, lastIndex)
