@@ -1,22 +1,38 @@
+import Vue from 'vue'
+
 export function errorParser (error) {
+  let statusText = ''
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     if (error.response.status === 500) {
+      statusText = 'We are unable to process your request'
       console.error('Unable to process your request')
     } else {
-      let statusText = error.response.statusText
+      statusText = error.response.statusText
       console.error(`There was an error processing your request ${statusText}`)
     }
   } else if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
-    console.error(error.request);
+    console.error(error.request)
+    console.error(error.message)
+    statusText = error.message
   } else {
     // Something happened in setting up the request that triggered an Error
     console.error('Error', error.message);
+    statusText = error.message
   }
+
+  Vue.$toast.error(statusText, {
+    timeout: 2000,
+    position: 'top-right',
+    closeOnClick: true,
+    pauseOnHover: true,
+    hideProgressBar: true
+  })
+
   return {
     success: false
   }
