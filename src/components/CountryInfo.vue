@@ -5,7 +5,15 @@
     <table class="table">
         <thead class="thead-light">
           <tr>
-            <th scope="col">Date </th>
+            <th scope="col">
+              Date 
+                <button v-show="reverseDate" class="btn btn-sm btn-light" v-on:click="reverseDate = false">
+                    <i class="fas cursor-pointer fa-long-arrow-alt-up"></i>
+                </button>
+                <button v-show="!reverseDate" class="btn btn-sm btn-light" v-on:click="reverseDate = true">
+                    <i class="fas cursor-pointer fa-long-arrow-alt-down"></i>
+                </button>
+            </th>
             <th scope="col">Confirmed</th>
             <th scope="col">Recovered</th>
             <th scope="col">Deaths</th>
@@ -50,6 +58,12 @@ export default {
     activeCountry: String
   },
 
+  data () {
+    return {
+      reverseDate: true
+    }
+  },
+
   created () {
     console.debug(`active country is ${this.activeCountry}`)
     this.init() // for the first item clicked
@@ -61,7 +75,8 @@ export default {
     }),
 
     confirmedData: function () {
-      return this.$store.getters['cases/getDataForCountry']('confirmed', this.activeCountry)
+      let data = this.$store.getters['cases/getDataForCountry']('confirmed', this.activeCountry)
+      return this.reverseDate ? [...data].reverse(): data
     },
 
     parsedRecoveredData: function () {
